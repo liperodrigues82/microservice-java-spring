@@ -1,0 +1,23 @@
+package br.com.microservice.pagamentos.service;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Service;
+
+import br.com.microservice.pagamentos.model.Pagamento;
+import br.com.microservice.pagamentos.repository.PagamentoRepository;
+
+@Service
+public class PagamentoService {
+
+	@Autowired
+	private PagamentoRepository repository;
+	
+	@Autowired
+	private ModelMapper modelMapper;
+	
+	public Page<PagamentoDto> findAll() {
+		return repository.findAll();
+	}
+}

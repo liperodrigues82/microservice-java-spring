@@ -1,0 +1,12 @@
+package br.com.microservice.pagamentos.model;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public enum Status {
+	CRIADO,
+	CONFIRMADO,
+	CANCELADO
+}
