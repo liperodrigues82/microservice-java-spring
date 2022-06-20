@@ -30,13 +30,13 @@ public class PedidoController {
         private PedidoService service;
 
         @GetMapping()
-        public List<PedidoDto> listarTodos() {
-            return service.obterTodos();
+        public List<PedidoDto> findAll() {
+            return service.findAll();
         }
 
         @GetMapping("/{id}")
-        public ResponseEntity<PedidoDto> listarPorId(@PathVariable @NotNull Long id) {
-            PedidoDto dto = service.obterPorId(id);
+        public ResponseEntity<PedidoDto> findById(@PathVariable @NotNull Long id) {
+            PedidoDto dto = service.findById(id);
 
             return  ResponseEntity.ok(dto);
         }
@@ -47,8 +47,8 @@ public class PedidoController {
         }
 
         @PostMapping()
-        public ResponseEntity<PedidoDto> realizaPedido(@RequestBody @Valid PedidoDto dto, UriComponentsBuilder uriBuilder) {
-            PedidoDto pedidoRealizado = service.criarPedido(dto);
+        public ResponseEntity<PedidoDto> insertOrder(@RequestBody @Valid PedidoDto dto, UriComponentsBuilder uriBuilder) {
+            PedidoDto pedidoRealizado = service.insertOrder(dto);
 
             URI endereco = uriBuilder.path("/pedidos/{id}").buildAndExpand(pedidoRealizado.getId()).toUri();
 
@@ -57,16 +57,16 @@ public class PedidoController {
         }
 
         @PutMapping("/{id}/status")
-        public ResponseEntity<PedidoDto> atualizaStatus(@PathVariable Long id, @RequestBody StatusDto status){
-           PedidoDto dto = service.atualizaStatus(id, status);
+        public ResponseEntity<PedidoDto> updateStatus(@PathVariable Long id, @RequestBody StatusDto status){
+           PedidoDto dto = service.updateStatus(id, status);
 
             return ResponseEntity.ok(dto);
         }
 
 
         @PutMapping("/{id}/pago")
-        public ResponseEntity<Void> aprovaPagamento(@PathVariable @NotNull Long id) {
-            service.aprovaPagamentoPedido(id);
+        public ResponseEntity<Void> approvePayment(@PathVariable @NotNull Long id) {
+            service.approvePaymentOrder(id);
 
             return ResponseEntity.ok().build();
 

@@ -1,0 +1,8 @@
+package br.com.microservice.pagamentos.http;
+
+import org.springframework.cloud.openfeign.FeignClient;
+
+@FeignClient("pedidos-ms")
+public interface PedidoClient {
+
+}

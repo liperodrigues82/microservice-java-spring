@@ -27,20 +27,20 @@ public class PedidoService {
     @Autowired
 	private ModelMapper modelMapper;
 
-    public List<PedidoDto> obterTodos() {
+    public List<PedidoDto> findAll() {
         return repository.findAll().stream()
                 .map(p -> modelMapper.map(p, PedidoDto.class))
                 .collect(Collectors.toList());
     }
 
-    public PedidoDto obterPorId(Long id) {
+    public PedidoDto findById(Long id) {
         Pedido pedido = repository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
 
         return modelMapper.map(pedido, PedidoDto.class);
     }
 
-    public PedidoDto criarPedido(PedidoDto dto) {
+    public PedidoDto insertOrder(PedidoDto dto) {
         Pedido pedido = modelMapper.map(dto, Pedido.class);
 
         pedido.setDataHora(LocalDateTime.now());
@@ -51,28 +51,28 @@ public class PedidoService {
         return modelMapper.map(pedido, PedidoDto.class);
     }
 
-    public PedidoDto atualizaStatus(Long id, StatusDto dto) {
+    public PedidoDto updateStatus(Long id, StatusDto dto) {
 
-        Pedido pedido = repository.porIdComItens(id);
+        Pedido pedido = repository.byIdWithOrders(id);
 
         if (pedido == null) {
             throw new EntityNotFoundException();
         }
 
         pedido.setStatus(dto.getStatus());
-        repository.atualizaStatus(dto.getStatus(), pedido);
+        repository.updateStatus(dto.getStatus(), pedido);
         return modelMapper.map(pedido, PedidoDto.class);
     }
 
-    public void aprovaPagamentoPedido(Long id) {
+    public void approvePaymentOrder(Long id) {
 
-        Pedido pedido = repository.porIdComItens(id);
+        Pedido pedido = repository.byIdWithOrders(id);
 
         if (pedido == null) {
             throw new EntityNotFoundException();
         }
 
         pedido.setStatus(Status.PAGO);
-        repository.atualizaStatus(Status.PAGO, pedido);
+        repository.updateStatus(Status.PAGO, pedido);
     }
 }
